@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="tokyo-night">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carlos Ranara — Mini Portfolio</title>
+    <meta name="description" content="Carlos Ranara — a pragmatic software engineer building thoughtful web products, developer tools, and performance-aware systems.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root,
+        [data-theme="tokyo-night"] {
+            --base: #1a1b26;
+            --surface: #16161e;
+            --overlay: #2f3549;
+            --muted: #737aa2;
+            --subtle: #a9b1d6;
+            --text: #c0caf5;
+            --love: #f7768e;
+            --gold: #e0af68;
+            --rose: #ff9e64;
+            --pine: #7aa2f7;
+            --foam: #7dcfff;
+            --iris: #bb9af7;
+            --highlight-low: #24283b;
+            --highlight-med: #3b4261;
+            --shadow: rgb(8 9 15 / 58%);
+        }
+
+        [data-theme="rose-pine"] {
+            --base: #191724;
+            --surface: #1f1d2e;
+            --overlay: #26233a;
+            --muted: #797593;
+            --subtle: #a7a2c3;
+            --text: #e0def4;
+            --love: #eb6f92;
+            --gold: #f6c177;
+            --rose: #ebbcba;
+            --pine: #31748f;
+            --foam: #9ccfd8;
+            --iris: #c4a7e7;
+            --highlight-low: #21202e;
+            --highlight-med: #403d52;
+            --shadow: rgb(7 6 15 / 58%);
+        }
+
+        [data-theme="dawn"] {
+            --base: #faf4ed;
+            --surface: #fffaf3;
+            --overlay: #f2e9e1;
+            --muted: #9893a5;
+            --subtle: #797593;
+            --text: #575279;
+            --love: #b4637a;
+            --gold: #ea9d34;
+            --rose: #d7827a;
+            --pine: #286983;
+            --foam: #56949f;
+            --iris: #907aa9;
+            --highlight-low: #f4ede8;
+            --highlight-med: #dfdad9;
+            --shadow: rgb(87 82 121 / 16%);
+        }
+
+        :root {
+            --serif: 'Instrument Serif', serif;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+            --hairline: 1px solid color-mix(in srgb, var(--highlight-med) 45%, transparent);
+            --accent-gradient: linear-gradient(120deg, var(--iris), var(--foam) 48%, var(--rose));
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; overflow-x: clip; }
+
+        body {
+            background: var(--base);
+            color: var(--text);
+            font-family: 'DM Mono', monospace;
+            font-weight: 300;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: clip;
+            transition: background-color .35s ease, color .35s ease;
+        }
+
+        ::selection { background: color-mix(in srgb, var(--iris) 40%, transparent); }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* Aurora background */
+        .aurora {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 75% 12%, color-mix(in srgb, var(--iris) 13%, transparent), transparent 28%),
+                radial-gradient(circle at 8% 44%, color-mix(in srgb, var(--pine) 11%, transparent), transparent 27%),
+                radial-gradient(circle at 75% 76%, color-mix(in srgb, var(--rose) 8%, transparent), transparent 28%),
+                var(--base);
+        }
+        .aurora::before,
+        .aurora::after {
+            content: '';
+            position: absolute;
+            width: 42rem;
+            height: 42rem;
+            border-radius: 50%;
+            filter: blur(110px);
+            opacity: .16;
+            animation: drift 22s ease-in-out infinite alternate;
+        }
+        .aurora::before { inset: -20rem auto auto -10rem; background: var(--iris); }
+        .aurora::after { inset: auto -15rem -18rem auto; background: var(--foam); animation-delay: -8s; }
+
+        @keyframes drift {
+            to { transform: translate(6rem, 4rem) scale(1.12); }
+        }
+
+        .shell { width: min(100% - 3rem, 1100px); margin-inline: auto; }
+
+        /* Nav */
+        header.nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(14px);
+            background: color-mix(in srgb, var(--base) 70%, transparent);
+            border-bottom: var(--hairline);
+        }
+        .nav .shell {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding-block: .9rem;
+        }
+        .brand { font-family: var(--serif); font-size: 1.5rem; }
+        .nav nav { display: flex; gap: 1.5rem; font-size: .8rem; color: var(--subtle); }
+        .nav nav a { transition: color .2s; }
+        .nav nav a:hover { color: var(--text); }
+
+        .themes { display: flex; gap: .5rem; }
+        .themes button {
+            width: 1.1rem;
+            height: 1.1rem;
+            border-radius: 50%;
+            border: 1px solid var(--highlight-med);
+            cursor: pointer;
+            transition: transform .2s var(--ease);
+        }
+        .themes button:hover { transform: scale(1.25); }
+        .themes button[aria-pressed="true"] { outline: 2px solid var(--text); outline-offset: 2px; }
+
+        /* Typography */
+        h1, h2, h3, .statement { font-family: var(--serif); font-weight: 400; line-height: 1.05; }
+        em {
+            background: var(--accent-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-style: italic;
+        }
+        .index {
+            font-size: .72rem;
+            letter-spacing: .18em;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        /* Hero */
+        .hero { padding-block: clamp(4rem, 12vw, 9rem) clamp(3rem, 8vw, 6rem); }
+        .hero .intro { color: var(--subtle); margin-bottom: 1.2rem; }
+        .hero h1 { font-size: clamp(3rem, 9vw, 7rem); letter-spacing: -.02em; }
+        .hero .lede { max-width: 40rem; margin-top: 1.8rem; color: var(--subtle); }
+        .actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2.2rem; }
+        .btn {
+            padding: .7rem 1.3rem;
+            border-radius: 999px;
+            border: var(--hairline);
+            font-size: .8rem;
+            background: color-mix(in srgb, var(--overlay) 40%, transparent);
+            transition: transform .25s var(--ease), border-color .25s;
+        }
+        .btn:hover { transform: translateY(-2px); border-color: var(--iris); }
+        .btn.primary { background: var(--iris); color: var(--base); border-color: var(--iris); }
+        .currently {
+            margin-top: 3rem;
+            font-size: .8rem;
+            color: var(--muted);
+            display: flex;
+            gap: .8rem;
+            align-items: baseline;
+        }
+        .currently::before {
+            content: '';
+            width: .5rem;
+            height: .5rem;
+            border-radius: 50%;
+            background: var(--foam);
+            box-shadow: 0 0 12px var(--foam);
+            flex: none;
+            transform: translateY(-1px);
+        }
+
+        /* Sections */
+        section { padding-block: clamp(3rem, 8vw, 6rem); }
+        .section-heading { margin-bottom: 2.5rem; }
+        .section-heading h2 { font-size: clamp(2rem, 5vw, 3.6rem); }
+        .section-heading p { margin-top: 1rem; max-width: 36rem; color: var(--subtle); font-size: .9rem; }
+
+        /* Glass cards */
+        .glass {
+            background: color-mix(in srgb, var(--surface) 62%, transparent);
+            border: var(--hairline);
+            border-radius: 1.2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 50px -25px var(--shadow);
+            transition: transform .35s var(--ease), border-color .35s;
+        }
+        a.glass:hover { transform: translateY(-4px); border-color: var(--accent); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+        .project { padding: 1.6rem; display: flex; flex-direction: column; gap: .8rem; --accent: var(--iris); }
+        .project[data-accent="foam"] { --accent: var(--foam); }
+        .project[data-accent="rose"] { --accent: var(--rose); }
+        .project[data-accent="gold"] { --accent: var(--gold); }
+        .project[data-accent="love"] { --accent: var(--love); }
+        .project .eyebrow { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+        .project h3 { font-size: 2rem; }
+        .project p { font-size: .85rem; color: var(--subtle); flex: 1; }
+        .project .detail { font-size: .72rem; color: var(--muted); }
+        .tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+        .tags span {
+            font-size: .68rem;
+            padding: .15rem .6rem;
+            border-radius: 999px;
+            border: var(--hairline);
+            color: var(--subtle);
+        }
+
+        /* About */
+        .statement { font-size: clamp(1.8rem, 4.5vw, 3.2rem); max-width: 46rem; margin-bottom: 2.5rem; }
+        .caps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
+        .cap { padding: 1.5rem; }
+        .cap small { display: block; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+        .cap strong { display: block; font-family: var(--serif); font-weight: 400; font-size: 1.7rem; margin: .4rem 0; }
+        .cap p { font-size: .8rem; color: var(--subtle); }
+
+        /* Contact */
+        .contact { text-align: center; }
+        .contact h2 { font-size: clamp(2.4rem, 7vw, 5rem); }
+        .contact p { max-width: 36rem; margin: 1.5rem auto 0; color: var(--subtle); font-size: .9rem; }
+        .contact .actions { justify-content: center; }
+
+        footer { border-top: var(--hairline); padding-block: 2rem; color: var(--muted); font-size: .75rem; }
+        footer .shell { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+        footer a:hover { color: var(--text); }
+
+        @media (width <= 760px) {
+            .shell { width: min(100% - 2rem, 1100px); }
+            .nav nav { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .aurora::before, .aurora::after { animation: none; }
+            * { transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="aurora" aria-hidden="true"></div>
+
+    <header class="nav">
+        <div class="shell">
+            <a class="brand" href="#top">Carlos Ranara</a>
+            <nav aria-label="Primary">
+                <a href="#work">Work</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="themes" role="group" aria-label="Theme">
+                <button type="button" data-set-theme="tokyo-night" title="Tokyo Night" aria-label="Tokyo Night" style="background:#bb9af7"></button>
+                <button type="button" data-set-theme="rose-pine" title="Rosé Pine" aria-label="Rosé Pine" style="background:#ebbcba"></button>
+                <button type="button" data-set-theme="dawn" title="Dawn" aria-label="Dawn" style="background:#ea9d34"></button>
+            </div>
+        </div>
+    </header>
+
+    <main id="top">
+        <div class="shell">
+            <section class="hero">
+                <p class="intro">Hello, I’m Carlos.</p>
+                <h1>I make software <em>with nerve.</em></h1>
+                <p class="lede">A pragmatic software engineer building thoughtful web products, developer tools, and performance-aware systems.</p>
+                <div class="actions">
+                    <a class="btn primary" href="#work">See my work</a>
+                    <a class="btn" href="https://github.com/AmaneKai" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <p class="currently">currently — building more for the web and going deep on .NET architecture.</p>
+            </section>
+
+            <section id="work">
+                <div class="section-heading">
+                    <p class="index">01 / WORK</p>
+                    <h2>Built to be used.<br><em>Designed to be remembered.</em></h2>
+                    <p>Projects where clean engineering, practical choices, and visual character solve the same problem.</p>
+                </div>
+                <div class="grid">
+                    <a class="glass project" data-accent="rose" href="https://slottle-co.vercel.app/" target="_blank" rel="noopener">
+                        <span class="eyebrow">Less scheduling, more living</span>
+                        <h3>Slottle</h3>
+                        <p>A browser extension that generates conflict-free university schedules without copied cookies or manual entry.</p>
+                        <span class="detail">TypeScript · React · Browser Extension</span>
+                    </a>
+                    <a class="glass project" data-accent="iris" href="https://gitpeak.vercel.app/" target="_blank" rel="noopener">
+                        <span class="eyebrow">GitHub intelligence, made beautiful</span>
+                        <h3>GitPeak</h3>
+                        <p>A visual analytics experience that turns a public GitHub profile into a polished, shareable dashboard.</p>
+                        <span class="detail">Svelte 5 · GitHub GraphQL · Cloudflare</span>
+                    </a>
+                    <a class="glass project" data-accent="gold" href="https://github.com/AmaneKai/Python-Interpreter" target="_blank" rel="noopener">
+                        <span class="eyebrow">Python, interpreted in C</span>
+                        <h3>Python Interpreter</h3>
+                        <p>An interpreter supporting functions, recursion, control flow, and indentation-sensitive syntax.</p>
+                        <span class="detail">C · Parsers · Language Design</span>
+                    </a>
+                    <a class="glass project" data-accent="foam" href="https://github.com/AmaneKai/http-from-tcp" target="_blank" rel="noopener">
+                        <span class="eyebrow">Systems</span>
+                        <h3>http-from-tcp</h3>
+                        <p>HTTP built from raw TCP — parsing, concurrency, and the protocol details most frameworks hide.</p>
+                        <span class="detail">Rust · Networking · Concurrency</span>
+                    </a>
+                    <a class="glass project" data-accent="love" href="https://github.com/AmaneKai/rust-tetris" target="_blank" rel="noopener">
+                        <span class="eyebrow">Experiments</span>
+                        <h3>Rust Tetris</h3>
+                        <p>A terminal Tetris game, written as an exercise in game systems and tight loops.</p>
+                        <span class="detail">Rust · Terminal · Game Systems</span>
+                    </a>
+                    <a class="glass project" data-accent="iris" href="https://github.com/AmaneKai/ipynb-peek.nvim" target="_blank" rel="noopener">
+                        <span class="eyebrow">Tools</span>
+                        <h3>ipynb-peek.nvim</h3>
+                        <p>Peek into Jupyter notebooks from Neovim.</p>
+                        <span class="detail">Lua · Node.js · Jupyter Kernels</span>
+                    </a>
+                </div>
+            </section>
+
+            <section id="about">
+                <p class="index">02 / POINT OF VIEW</p>
+                <p class="statement">There is no best solution, <em>only the best compromise</em> for the situation.</p>
+                <div class="caps">
+                    <div class="glass cap">
+                        <small>the foundation</small>
+                        <strong>Systems thinking</strong>
+                        <p>Rust, C, Go, networking, interpreters, performance</p>
+                    </div>
+                    <div class="glass cap">
+                        <small>the main canvas</small>
+                        <strong>Web products</strong>
+                        <p>Svelte, TypeScript, browser extensions, frontend exploration</p>
+                    </div>
+                    <div class="glass cap">
+                        <small>the current rabbit hole</small>
+                        <strong>Application architecture</strong>
+                        <p>.NET · C# · OOP patterns · CQRS · mediator patterns</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="contact">
+                <p class="index">03 / OPEN CHANNEL</p>
+                <h2>Bring me the idea <em>you can’t ignore.</em></h2>
+                <p>I’m open to internships, collaborations, open-source work, and unusually difficult problems. If it sounds ambitious, we’ll probably get along.</p>
+                <div class="actions">
+                    <a class="btn primary" href="mailto:carlosranara0@gmail.com">Email me</a>
+                    <a class="btn" href="https://github.com/AmaneKai" target="_blank" rel="noopener">GitHub</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="shell">
+            <span>Designed with intent. Engineered with curiosity.</span>
+            <a href="#top">Back to top ↑</a>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            var KEY = 'portfolio-theme-v2';
+            var buttons = document.querySelectorAll('[data-set-theme]');
+            function apply(id) {
+                document.documentElement.setAttribute('data-theme', id);
+                buttons.forEach(function (b) {
+                    b.setAttribute('aria-pressed', String(b.dataset.setTheme === id));
+                });
+            }
+            var saved = null;
+            try { saved = localStorage.getItem(KEY); } catch (e) {}
+            apply(saved && document.querySelector('[data-set-theme="' + saved + '"]') ? saved : 'tokyo-night');
+            buttons.forEach(function (b) {
+                b.addEventListener('click', function () {
+                    apply(b.dataset.setTheme);
+                    try { localStorage.setItem(KEY, b.dataset.setTheme); } catch (e) {}
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
